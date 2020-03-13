@@ -25,7 +25,7 @@ SECRET_KEY = 'x+a=(ifg@$#fk16m89k(p*ogeq)$wpcgi-uifk1m1-oroa=*9j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
