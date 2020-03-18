@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+import datetime
 
 # Create your models here.
 
@@ -15,8 +16,8 @@ class Seed(models.Model):
         SUN_SHADE = 3, _('Shade')
 
     common_name = models.CharField(max_length=256)
-    botanical_name = models.CharField(max_length=256, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
+    botanical_name = models.CharField(max_length=256, blank=True)
+    description = models.TextField(blank=True)
     germination_days = models.IntegerField(null=True, blank=True)
     pot_on_days = models.IntegerField(null=True, blank=True)
     transplant_days = models.IntegerField(null=True, blank=True)
@@ -27,11 +28,10 @@ class Seed(models.Model):
 
 
 class Plant(models.Model):
-    
     seed = models.ForeignKey('Seed', on_delete=models.PROTECT)
     soil_description = models.TextField()
     quantity = models.IntegerField()
-    sow_date = models.DateField(null=True, blank=True)
+    sow_date = models.DateField(default=datetime.date.today)
     germinate_date = models.DateField(null=True, blank=True)
     pot_on_date = models.DateField(null=True, blank=True)
     transplant_date = models.DateField(null=True, blank=True)
@@ -40,9 +40,11 @@ class Plant(models.Model):
     harvested = models.BooleanField(default=False, null=True, blank=True)
     total_yield = models.IntegerField(help_text='Yield in KG', null=True, blank=True)
 
+    def __str__(self):
+        return '{0} planted on {1}'.format(self.seed.common_name, self.sow_date)
+
 
 class Note(models.Model):
-
     seed_id = models.ForeignKey('Seed', on_delete=models.CASCADE, null=True, blank=True)
     plant_id = models.ForeignKey('Plant', on_delete=models.CASCADE, null=True, blank=True)
     note = models.TextField()
@@ -51,7 +53,7 @@ class Note(models.Model):
 
 class Soil(models.Model):
     name = models.CharField(max_length=32)
-    description = models.TextField(null=True, blank=True)
+    description = models.TextField(blank=True)
     
     def __str__(self):
         return self.name
