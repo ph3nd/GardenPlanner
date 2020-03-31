@@ -54,6 +54,7 @@ class Note(models.Model):
 class Soil(models.Model):
     name = models.CharField(max_length=32)
     description = models.TextField(blank=True)
+    pH = models.IntegerField(blank=True, null=True)
     
     def __str__(self):
         return self.name
